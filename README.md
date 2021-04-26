@@ -15,7 +15,7 @@ pip install -r requirements.txt
 Go to [Neo4j's Sandbox](https://sandbox.neo4j.com/) and create a new project, select Movies under Pre Built Data. Go to `Connection details` and grab your credentials to add it to the following environment variable:
 
 ```shell
-export NEO4J_BOLT_URL="bolt://neo4j:password@host-or-ip:port"
+export NEO4J_BOLT_URL=bolt://neo4j:password@host-or-ip:port
 ```
 
 ### Run the server
