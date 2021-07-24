@@ -9,7 +9,6 @@ class ActedIn(StructuredRel):
 
 class Movie(DjangoNode):
     uuid = UniqueIdProperty(primary_key=True)
-   # id = IntegerProperty()
     title = StringProperty()
     tagline = StringProperty()
     released = IntegerProperty()
@@ -26,7 +25,6 @@ class Movie(DjangoNode):
 
 class Person(DjangoNode):
     uuid = UniqueIdProperty(primary_key=True)
- #   id = IntegerProperty()
     name = StringProperty()
     born = IntegerProperty()
 
@@ -36,4 +34,7 @@ class Person(DjangoNode):
     produced = RelationshipFrom('Movie', 'PRODUCED')
     reviewed = RelationshipFrom('Movie', 'REVIEWED')
     acted_in = RelationshipFrom('Movie', 'ACTED_IN')
+
+    class Meta:
+        app_label = 'movies'
 
