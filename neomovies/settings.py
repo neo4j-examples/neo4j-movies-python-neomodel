@@ -32,9 +32,14 @@ ALLOWED_HOSTS = ["*"]
 # Application definition
 
 INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.contenttypes',
+    'django.contrib.auth',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+     # Third party
     'django_neomodel',
     'movies'
 ]
@@ -46,6 +51,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
 ]
 
 ROOT_URLCONF = 'neomovies.urls'
@@ -58,6 +64,7 @@ TEMPLATES = [
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
+                'django.contrib.auth.context_processors.auth',
                 'django.template.context_processors.request',
                 'django.contrib.messages.context_processors.messages',
             ],
@@ -71,13 +78,17 @@ WSGI_APPLICATION = 'neomovies.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+#Connect to Neo4j Database
 NEOMODEL_NEO4J_BOLT_URL = os.environ.get('NEO4J_BOLT_URL', 'bolt://neo4j:bridges-canister-adviser@54.174.88.253:7687')
 
 DATABASES = {
     'default': {
+        'NAME': 'movies.db',
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+        'USER': '',
+        'PASSWORD': '',
+        'PORT': '',
+    },
 }
 
 

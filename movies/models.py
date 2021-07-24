@@ -1,5 +1,6 @@
+from django.db import models
 from django_neomodel import DjangoNode
-from neomodel import ArrayProperty, StringProperty, IntegerProperty, RelationshipFrom, RelationshipTo, StructuredRel
+from neomodel import ArrayProperty, StringProperty, IntegerProperty, RelationshipFrom, RelationshipTo, StructuredRel, UniqueIdProperty
 
 
 class ActedIn(StructuredRel):
@@ -7,7 +8,7 @@ class ActedIn(StructuredRel):
 
 
 class Movie(DjangoNode):
-    id = IntegerProperty()
+    uuid = UniqueIdProperty(primary_key=True)
     title = StringProperty()
     tagline = StringProperty()
     released = IntegerProperty()
@@ -18,9 +19,12 @@ class Movie(DjangoNode):
     reviewers = RelationshipFrom('Person', 'REVIEWED')
     actors = RelationshipFrom('Person', 'ACTED_IN', model=ActedIn)
 
+    class Meta:
+        app_label = 'movies'
+
 
 class Person(DjangoNode):
-    id = IntegerProperty()
+    uuid = UniqueIdProperty(primary_key=True)
     name = StringProperty()
     born = IntegerProperty()
 
@@ -30,4 +34,7 @@ class Person(DjangoNode):
     produced = RelationshipFrom('Movie', 'PRODUCED')
     reviewed = RelationshipFrom('Movie', 'REVIEWED')
     acted_in = RelationshipFrom('Movie', 'ACTED_IN')
+
+    class Meta:
+        app_label = 'movies'
 
