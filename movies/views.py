@@ -1,7 +1,7 @@
 from django.http import JsonResponse
 from django.shortcuts import render
 from neomodel import Traversal, match
-from .models import Movie, Person
+from .models import Movie, Person, Tag, Track
 
 
 def movies_index(request):
@@ -10,20 +10,20 @@ def movies_index(request):
         'movies': movies
     })
 
-
+# Makes the cute graph UI
 def graph(request):
     nodes = []
     rels = []
-    movies = Movie.nodes.has(actors=True)
+    movies = Tag.nodes.has(top_track=True)
 
     i = 0
     for movie in movies:
-        nodes.append({'id': movie.id, 'title': movie.title, 'label': 'movie'})
+        nodes.append({'id': movie.uuid, 'title': movie.name, 'label': 'movie'})
         target = i
         i += 1
 
-        for person in movie.actors:
-            actor = {'id': person.id, 'title': person.name, 'label': 'actor'}
+        for person in movie.has_tag:
+            actor = {'id': person.uuid, 'title': person.title, 'label': 'actor'}
 
             try:
                 source = nodes.index(actor)
@@ -42,12 +42,16 @@ def search(request):
     except KeyError:
         return JsonResponse([])
 
-    movies = Movie.nodes.filter(title__icontains=q)
+    #here temporarily
+    for tags_to_update in Tag.nodes.filter(name__icontains=q):
+        tags_to_update.set_top_track()
+
+    movies = Tag.nodes.filter(name__icontains=q).has(top_track=True)
     return JsonResponse([{
-        'id': movie.id, 
-        'title': movie.title, 
-        'tagline': movie.tagline, 
-        'released': movie.released, 
+        'id': movie.uuid, 
+        'title': movie.name, 
+        'tagline': movie.top_track.single().title, 
+        'released': movie.top_track.single().uuid, 
         'label': 'movie'
     } for movie in movies], safe=False)
 

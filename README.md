@@ -1,4 +1,4 @@
-# neo4j-movies-python-neomodel
+# Resonate Tag Charts
 
 ## How to setup locally
 
@@ -17,6 +17,8 @@ Go to [Neo4j's Sandbox](https://sandbox.neo4j.com/) and create a new project, se
 ```shell
 export NEO4J_BOLT_URL=bolt://neo4j:password@host-or-ip:port
 ```
+
+export NEO4J_BOLT_URL=bolt://myuser:myuser@localhost:7687
 
 Run migrations and create your superuser (for the admin, this is using an SQLite database)
 
