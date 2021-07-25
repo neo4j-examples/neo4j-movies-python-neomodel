@@ -1,4 +1,4 @@
-"""neomovies URL Configuration
+"""neotracks URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/3.2/topics/http/urls/
@@ -14,13 +14,12 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path
-from movies import views
+from tracks import views
 from django.contrib import admin
 
 urlpatterns = [
-    path('', views.movies_index),
+    path('', views.tracks_index),
     path('search', views.search),
     path('graph', views.graph),
-    path('movie/<str:title>', views.movie_by_title),
     path('admin/', admin.site.urls),
 ]

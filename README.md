@@ -1,4 +1,4 @@
-# neo4j-movies-python-neomodel
+# Resonate Tag Charts
 
 ## How to setup locally
 
@@ -10,9 +10,10 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### Create the Neo4j database with correct data
+### Create the Neo4j database and import your data (TODO)
 
-Go to [Neo4j's Sandbox](https://sandbox.neo4j.com/) and create a new project, select Movies under Pre Built Data. Go to `Connection details` and grab your credentials to add it to the following environment variable:
+
+### Add export the NEO4J_BOLT_URL
 
 ```shell
 export NEO4J_BOLT_URL=bolt://neo4j:password@host-or-ip:port
@@ -33,33 +34,6 @@ python manage.py runserver
 
 Now you should be able to access http://localhost:8000 and play with the app.
 
-## Using the Admin with the Sandbox Dataset
-
-Since the Movies dataset in the sandbox is a toy dataset, we need to make some minor changes to get it to work with our Django Admin. 
-Primarily, we need to add unique ids to our nodes so we can open their detail view:
-
-``` Example Movie Node
-{
-  "identity": 0,
-  "labels": [
-    "Movie"
-  ],
-  "properties": {
-"tagline": "Welcome to the Real World",
-"title": "The Matrix",
-"released": 1999
-  }
-}
-```
-
-For simplicity, do:
-
-```
-MATCH (n) 
-SET n.uuid = toString(id(n))
-```
-
-Now you can log into the admin with your superuser and take a look at your Move and Person nodes. 
 
 ## How to deploy to Heroku
 
