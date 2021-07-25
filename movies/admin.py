@@ -1,7 +1,7 @@
 from django.contrib import admin as dj_admin
 from django_neomodel import admin as neo_admin
 
-from .models import Movie, TrackGroup, Tag, Track, RUser
+from .models import TrackGroup, Tag, Track, RUser
 
 # warning! If you're using Sandbox you'll have to add uuids
 

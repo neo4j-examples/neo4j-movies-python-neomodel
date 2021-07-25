@@ -1,11 +1,11 @@
 from django.http import JsonResponse
 from django.shortcuts import render
 from neomodel import Traversal, match
-from .models import Movie, Person, Tag, Track
+from .models import Tag, Track
 
 
 def movies_index(request):
-    movies = Movie.nodes.all()
+    movies = Track.nodes.all()
     return render(request, 'index.html', {
         'movies': movies
     })
