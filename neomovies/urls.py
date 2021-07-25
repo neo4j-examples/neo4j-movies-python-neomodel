@@ -18,7 +18,7 @@ from movies import views
 from django.contrib import admin
 
 urlpatterns = [
-    path('', views.movies_index),
+    path('', views.tracks_index),
     path('search', views.search),
     path('graph', views.graph),
     path('admin/', admin.site.urls),

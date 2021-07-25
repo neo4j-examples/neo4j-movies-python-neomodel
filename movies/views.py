@@ -4,31 +4,31 @@ from neomodel import Traversal, match
 from .models import Tag, Track
 
 
-def movies_index(request):
-    movies = Track.nodes.all()
+def tracks_index(request):
+    tracks = Track.nodes.all()
     return render(request, 'index.html', {
-        'movies': movies
+        'tracks': tracks
     })
 
 # Makes the cute graph UI
 def graph(request):
     nodes = []
     rels = []
-    movies = Tag.nodes.has(top_track=True)
+    tags = Tag.nodes.has(top_track=True)
 
     i = 0
-    for movie in movies:
-        nodes.append({'id': movie.uuid, 'title': movie.name, 'label': 'movie'})
+    for tag in tags:
+        nodes.append({'id': tag.uuid, 'title': tag.name, 'label': 'tag'})
         target = i
         i += 1
 
-        for person in movie.has_tag:
-            actor = {'id': person.uuid, 'title': person.title, 'label': 'actor'}
+        for trackgroup in tag.has_tag:
+            group = {'id': trackgroup.uuid, 'title': trackgroup.title, 'label': 'group'}
 
             try:
-                source = nodes.index(actor)
+                source = nodes.index(group)
             except ValueError:
-                nodes.append(actor)
+                nodes.append(group)
                 source = i
                 i += 1
             rels.append({"source": source, "target": target})
@@ -46,11 +46,11 @@ def search(request):
     for tags_to_update in Tag.nodes.filter(name__icontains=q):
         tags_to_update.set_top_track()
 
-    movies = Tag.nodes.filter(name__icontains=q).has(top_track=True)
+    tags = Tag.nodes.filter(name__icontains=q).has(top_track=True)
     return JsonResponse([{
-        'id': movie.uuid, 
-        'title': movie.name, 
-        'tagline': movie.top_track.single().title, 
-        'released': movie.top_track.single().uuid, 
+        'id': tag.uuid, 
+        'title': tag.name, 
+        'tagline': tag.top_track.single().title, 
+        'released': tag.top_track.single().uuid, 
         'label': 'movie'
-    } for movie in movies], safe=False)
+    } for tag in tags], safe=False)

@@ -3,8 +3,6 @@ from django_neomodel import admin as neo_admin
 
 from .models import TrackGroup, Tag, Track, RUser
 
-# warning! If you're using Sandbox you'll have to add uuids
-
 class RUserAdmin(dj_admin.ModelAdmin):
     list_display = ("uuid","uuid")
 neo_admin.register(RUser, RUserAdmin)
