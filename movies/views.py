@@ -42,7 +42,7 @@ def search(request):
     except KeyError:
         return JsonResponse([])
 
-    #here temporarily
+    #here temporarily, we don't want to do this every time
     for tags_to_update in Tag.nodes.filter(name__icontains=q):
         tags_to_update.set_top_track()
 
@@ -54,42 +54,3 @@ def search(request):
         'released': movie.top_track.single().uuid, 
         'label': 'movie'
     } for movie in movies], safe=False)
-
-
-def serialize_cast(person, job, rel=None):
-    return {
-        'id': person.id,
-        'name': person.name,
-        'job': job,
-        'role': rel.roles if rel else None
-    }
-
-
-def movie_by_title(request, title):
-    movie = Movie.nodes.get(title=title)
-    cast = []
-
-    for person in movie.directors:
-        cast.append(serialize_cast(person, 'directed'))
-
-    for person in movie.writters:
-        cast.append(serialize_cast(person, 'wrote'))
-
-    for person in movie.producers:
-        cast.append(serialize_cast(person, 'produced'))
-
-    for person in movie.reviewers:
-        cast.append(serialize_cast(person, 'reviewed'))
-
-    for person in movie.actors:
-        rel = movie.actors.relationship(person)
-        cast.append(serialize_cast(person, 'acted', rel))
-
-    return JsonResponse({
-        'id': movie.id, 
-        'title': movie.title, 
-        'tagline': movie.tagline, 
-        'released': movie.released, 
-        'label': 'movie',
-        'cast': cast
-    })

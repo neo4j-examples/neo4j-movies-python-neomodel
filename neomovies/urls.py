@@ -21,6 +21,5 @@ urlpatterns = [
     path('', views.movies_index),
     path('search', views.search),
     path('graph', views.graph),
-    path('movie/<str:title>', views.movie_by_title),
     path('admin/', admin.site.urls),
 ]
