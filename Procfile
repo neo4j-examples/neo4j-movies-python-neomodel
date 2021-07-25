@@ -1,1 +1,1 @@
-web: gunicorn neomovies.wsgi:application
+web: gunicorn neotracks.wsgi:application

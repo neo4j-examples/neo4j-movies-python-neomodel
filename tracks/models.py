@@ -12,7 +12,7 @@ class TrackGroup(DjangoNode):
     owns = RelationshipFrom('RUser', 'OWNS')
 
     class Meta:
-        app_label = 'movies'
+        app_label = 'tracks'
 
 class Tag(DjangoNode):
     uuid = UniqueIdProperty(primary_key=True)
@@ -36,7 +36,7 @@ class Tag(DjangoNode):
         self.cypher(query)
 
     class Meta:
-        app_label = 'movies'
+        app_label = 'tracks'
 
 class Track(DjangoNode):
     uuid = UniqueIdProperty(primary_key=True)
@@ -45,7 +45,7 @@ class Track(DjangoNode):
     has_track = RelationshipFrom('Track', 'HAS_TRACK')
 
     class Meta:
-        app_label = 'movies'
+        app_label = 'tracks'
 
 class RUser(DjangoNode):
     uuid = UniqueIdProperty(primary_key=True)
@@ -54,5 +54,5 @@ class RUser(DjangoNode):
     owns = RelationshipTo('TrackGroup', 'OWNS')
 
     class Meta:
-        app_label = 'movies'
+        app_label = 'tracks'
 
