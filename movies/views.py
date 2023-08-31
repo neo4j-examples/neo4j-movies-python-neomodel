@@ -18,12 +18,12 @@ def graph(request):
 
     i = 0
     for movie in movies:
-        nodes.append({'id': movie.id, 'title': movie.title, 'label': 'movie'})
+        nodes.append({'id': movie.element_id, 'title': movie.title, 'label': 'movie'})
         target = i
         i += 1
 
         for person in movie.actors:
-            actor = {'id': person.id, 'title': person.name, 'label': 'actor'}
+            actor = {'id': person.element_id, 'title': person.name, 'label': 'actor'}
 
             try:
                 source = nodes.index(actor)
@@ -44,7 +44,7 @@ def search(request):
 
     movies = Movie.nodes.filter(title__icontains=q)
     return JsonResponse([{
-        'id': movie.id, 
+        'id': movie.element_id, 
         'title': movie.title, 
         'tagline': movie.tagline, 
         'released': movie.released, 
@@ -54,7 +54,7 @@ def search(request):
 
 def serialize_cast(person, job, rel=None):
     return {
-        'id': person.id,
+        'id': person.element_id,
         'name': person.name,
         'job': job,
         'role': rel.roles if rel else None
@@ -82,7 +82,7 @@ def movie_by_title(request, title):
         cast.append(serialize_cast(person, 'acted', rel))
 
     return JsonResponse({
-        'id': movie.id, 
+        'id': movie.element_id, 
         'title': movie.title, 
         'tagline': movie.tagline, 
         'released': movie.released, 
