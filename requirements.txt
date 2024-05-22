@@ -1,5 +1,2 @@
-django==3.2
 gunicorn==20.1.0
-neo4j-driver==5.11.0
-neomodel==5.1.0
-django_neomodel==0.1.1
+django_neomodel==0.2.0

@@ -1,14 +1,13 @@
 from django.http import JsonResponse
 from django.shortcuts import render
-from neomodel import Traversal, match
+from neomodel import Traversal
+from neomodel.sync_ import match
 from .models import Movie, Person
 
 
 def movies_index(request):
     movies = Movie.nodes.all()
-    return render(request, 'index.html', {
-        'movies': movies
-    })
+    return render(request, "index.html", {"movies": movies})
 
 
 def graph(request):
@@ -18,12 +17,12 @@ def graph(request):
 
     i = 0
     for movie in movies:
-        nodes.append({'id': movie.element_id, 'title': movie.title, 'label': 'movie'})
+        nodes.append({"id": movie.element_id, "title": movie.title, "label": "movie"})
         target = i
         i += 1
 
         for person in movie.actors:
-            actor = {'id': person.element_id, 'title': person.name, 'label': 'actor'}
+            actor = {"id": person.element_id, "title": person.name, "label": "actor"}
 
             try:
                 source = nodes.index(actor)
@@ -43,21 +42,27 @@ def search(request):
         return JsonResponse([])
 
     movies = Movie.nodes.filter(title__icontains=q)
-    return JsonResponse([{
-        'id': movie.element_id, 
-        'title': movie.title, 
-        'tagline': movie.tagline, 
-        'released': movie.released, 
-        'label': 'movie'
-    } for movie in movies], safe=False)
+    return JsonResponse(
+        [
+            {
+                "id": movie.element_id,
+                "title": movie.title,
+                "tagline": movie.tagline,
+                "released": movie.released,
+                "label": "movie",
+            }
+            for movie in movies
+        ],
+        safe=False,
+    )
 
 
 def serialize_cast(person, job, rel=None):
     return {
-        'id': person.element_id,
-        'name': person.name,
-        'job': job,
-        'role': rel.roles if rel else None
+        "id": person.element_id,
+        "name": person.name,
+        "job": job,
+        "role": rel.roles if rel else None,
     }
 
 
@@ -66,26 +71,28 @@ def movie_by_title(request, title):
     cast = []
 
     for person in movie.directors:
-        cast.append(serialize_cast(person, 'directed'))
+        cast.append(serialize_cast(person, "directed"))
 
     for person in movie.writters:
-        cast.append(serialize_cast(person, 'wrote'))
+        cast.append(serialize_cast(person, "wrote"))
 
     for person in movie.producers:
-        cast.append(serialize_cast(person, 'produced'))
+        cast.append(serialize_cast(person, "produced"))
 
     for person in movie.reviewers:
-        cast.append(serialize_cast(person, 'reviewed'))
+        cast.append(serialize_cast(person, "reviewed"))
 
     for person in movie.actors:
         rel = movie.actors.relationship(person)
-        cast.append(serialize_cast(person, 'acted', rel))
+        cast.append(serialize_cast(person, "acted", rel))
 
-    return JsonResponse({
-        'id': movie.element_id, 
-        'title': movie.title, 
-        'tagline': movie.tagline, 
-        'released': movie.released, 
-        'label': 'movie',
-        'cast': cast
-    })
+    return JsonResponse(
+        {
+            "id": movie.element_id,
+            "title": movie.title,
+            "tagline": movie.tagline,
+            "released": movie.released,
+            "label": "movie",
+            "cast": cast,
+        }
+    )
